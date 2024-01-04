@@ -19,15 +19,14 @@ export const POST = async (req) => {
         await connectToDB()
         const newPrompts = dummyPosts.map(({prompt, userId, tag}) => {
             return new Prompt({
-                creator: "658c8310424405d642cce1a1",
+                creator: userId,
                 prompt: prompt,
                 tag: tag
             })
         })
 
         await Prompt.create(newPrompts);
-        
-        await newPrompts.save()
+    
         return new Response("Resetting DB, creating", {status: 200})
     }
     catch(error){

@@ -4,6 +4,7 @@ import {useState} from 'react'
 import Image from 'next/image'
 import {useSession} from 'next-auth/react'
 import {usePathname, useRouter} from 'next/navigation'
+import Link from 'next/link'
 
 const PromptCard = ({post, handleTagClick, handleEdit, handleDelete}) => {
   const {data : session} = useSession()
@@ -14,6 +15,9 @@ const PromptCard = ({post, handleTagClick, handleEdit, handleDelete}) => {
     setCopied(post.prompt)
     navigator.clipboard.writeText(post.prompt)
     setTimeout(() => setCopied(""), 3000)
+  }
+  const handleIdClick = () => {
+
   }
 
   return (
@@ -30,7 +34,12 @@ const PromptCard = ({post, handleTagClick, handleEdit, handleDelete}) => {
           />
 
           <div className="flex flex-col">
-            <h3 className="font-satoshi font-semibold text-gray-900">{post.creator.username}</h3>
+            <h3 
+            className="font-satoshi font-semibold text-gray-900">
+              <Link href={`/profile/${encodeURIComponent(post.creator._id)}?name=${encodeURIComponent(post.creator.username)}`}>
+                {post.creator.username}
+              </Link>
+              </h3>
             <p className="font-inter text-sm text-gray-500">{post.creator.email}</p>
           </div>
         </div>
@@ -52,6 +61,8 @@ const PromptCard = ({post, handleTagClick, handleEdit, handleDelete}) => {
       onClick={() => handleTagClick && handleTagClick(post.tag)}>
         {post.tag}
       </p>
+
+
 
       {session?.user.id === post.creator._id && 
       pathName === '/profile' && (

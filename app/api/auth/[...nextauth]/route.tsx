@@ -19,7 +19,7 @@ const handler = NextAuth({
     callbacks: {
         async session ({session}){
             const sessionUser = await User.findOne({
-                email : session.user.email
+                email : session.user?.email
             })
             session.user.id = sessionUser._id.toString()
     
@@ -29,13 +29,13 @@ const handler = NextAuth({
             try{
                 await connectToDB()
                 const userExists = await User.findOne({
-                    email: profile.email
+                    email: profile?.email
                 })
                 if(!userExists){
                     await User.create({
-                        email: profile.email,
-                        username: profile.name.replace(" ", "").toLowerCase(),
-                        image: profile.picture
+                        email: profile?.email,
+                        username: profile?.name?.replace(" ", "").toLowerCase(),
+                        image: profile?.picture
                     })                
                 }
                 return true

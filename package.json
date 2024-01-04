@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "cross-env NODE_ENV=development next dev",
+    "reset": "python reset.py",
+    "postdev": "python reset.py",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

@@ -2,23 +2,25 @@
 
 import {useState, useEffect} from 'react'
 import {useSession} from 'next-auth/react'
-import {useRouter} from 'next/navigation'
+import {useRouter, useSearchParams} from 'next/navigation'
 import {Prompt} from '@models/prompt'
 
 import Profile from "@components/Profile"
 
-const MyProfile = () => {
+const OtherProfile = ({params}) => {
     const {data: session} = useSession()
     const router = useRouter()
+    const searchParams = useSearchParams() 
+    const name = searchParams.get('name')
 
     const [posts , setPosts] = useState([])
     useEffect(() =>{
     const fetchPosts = async() => {
-      const response = await fetch(`/api/users/${session?.user.id}/posts`)
+      const response = await fetch(`/api/users/${params.userId}/posts`)
       const data = await response.json() 
       setPosts(data)
     }
-    if(session?.user.id) fetchPosts()
+    fetchPosts()
   }, [])
 
     const handleEdit = (post) => {
@@ -46,8 +48,8 @@ const MyProfile = () => {
 
     return (
         <Profile
-            name="My"
-            desc="Welcome to your personalized profile page"
+            name={name}
+            desc={`Welcome to ${name}'s personalized profile page, you can explore ${name}'s exceptional prompts here!`}
             data={posts}
             handleEdit={handleEdit}
             handleDelete={handleDelete}
@@ -55,4 +57,4 @@ const MyProfile = () => {
     )
 }
 
-export default MyProfile
+export default OtherProfile
