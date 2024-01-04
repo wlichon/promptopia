@@ -20,10 +20,13 @@ const handler = NextAuth({
         async session ({session}){
             if(session?.user){
                 const sessionUser = await User.findOne({
-                    email : session?.user?.email?
+                    email : session?.user?.email
                 })
-                if(sessionUser)
+
+                if(sessionUser){
                     session.user.id = sessionUser._id.toString()
+
+                }
 
             }
     
